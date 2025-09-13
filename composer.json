@@ -1,6 +1,6 @@
 {
     "name": "avastechnology/demeter",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "OOP approach for structural code generation.",
     "keywords": ["generation", "code style", "formatting"],
     "license": "MIT",
@@ -11,10 +11,11 @@
         }
     ],
     "require": {
-        "php": "^8.3"
+        "php": "^8.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.5"
+        "avastechnology/iolaus": "*",
+        "phpunit/phpunit": "^10.0"
     },
     "autoload": {
         "psr-4": {
