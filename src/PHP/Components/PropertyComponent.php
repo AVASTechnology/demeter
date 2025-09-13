@@ -68,7 +68,8 @@ class PropertyComponent extends AbstractComponent implements AnnotatedComponentI
     public function getIdentifier(): string
     {
         return sprintf(
-            '%s::%s',
+            '%s::%s::%s',
+            $this->isStatic() ? 'static' : 'instance',
             $this->getVisibility(),
             $this->getName()
         );

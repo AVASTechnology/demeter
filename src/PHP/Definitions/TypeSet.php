@@ -40,7 +40,7 @@ class TypeSet
                     }
 
                     if (class_exists($value, true)) {
-                        return '\\' . trim($value, '\\');
+                        return trim(strrchr($value, '\\'), '\\');
                     }
 
                     return $value;
@@ -72,7 +72,7 @@ class TypeSet
                     }
 
                     if (class_exists($value, true)) {
-                        return '\\' . trim($value, '\\');
+                        return trim(strrchr($value, '\\'), '\\');
                     }
 
                     return $value;
@@ -88,9 +88,14 @@ class TypeSet
      */
     protected function validate(mixed $value): bool
     {
-        return (($value instanceof Type)
-            || ($value instanceof Import)
-            || (is_string($value) && class_exists(strval($value), true))
-        );
+        if (is_string($value)) {
+            return class_exists(strval($value), true)
+                || (
+                    substr(strval($value), -2) === '[]'
+                    && class_exists(substr(strval($value), 0, -2), true)
+                );
+        }
+
+        return ($value instanceof Type) || ($value instanceof Import);
     }
 }
