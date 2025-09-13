@@ -97,8 +97,20 @@ abstract class AbstractTypeAnnotation implements AnnotationInterface
         );
     }
 
+    /**
+     * @param string $indentation
+     * @return string
+     */
     public function render(string $indentation = ''): string
     {
-        return '';
+        return implode(
+            ' ',
+            [
+                $indentation,
+                '@' . $this->getDocType(),
+                $this->getTypeString(true),
+                $this->getName(),
+            ]
+        );
     }
 }

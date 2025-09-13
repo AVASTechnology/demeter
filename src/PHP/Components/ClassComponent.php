@@ -127,7 +127,7 @@ class ClassComponent extends AbstractComponent
             }
         }
 
-        $this->imports[$import->getIdentifier()] = $import;
+        $this->imports[] = $import;
     }
 
     /**
@@ -217,7 +217,16 @@ class ClassComponent extends AbstractComponent
     }
 
     /**
-     * @return array
+     * @param  TraitComponent  $trait
+     * @return void
+     */
+    public function addTrait(TraitComponent $trait): void
+    {
+        $this->traits[] = $trait;
+    }
+
+    /**
+     * @return MethodComponent[]
      */
     public function sortMethods(): array
     {
@@ -244,6 +253,21 @@ class ClassComponent extends AbstractComponent
         );
 
         return $this->properties;
+    }
+
+    /**
+     * @return TraitComponent[]
+     */
+    public function sortTraits(): array
+    {
+        usort(
+            $this->traits,
+            function (TraitComponent $a, TraitComponent $b) {
+                return $a->getIdentifier() <=> $b->getIdentifier();
+            }
+        );
+
+        return $this->traits;
     }
 
     /**

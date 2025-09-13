@@ -65,7 +65,14 @@ class GenericDoc implements AnnotationInterface
      */
     public function render(string $indentation = ''): string
     {
-        return '';
+        return implode(
+            ' ',
+            [
+                $indentation,
+                '@' . $this->getDocType(),
+                $this->getName(),
+            ]
+        );
     }
 
     /**

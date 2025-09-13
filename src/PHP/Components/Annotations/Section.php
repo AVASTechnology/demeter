@@ -145,16 +145,21 @@ class Section implements AnnotationInterface
 
         if (!empty($this->getTitle())) {
             $renderedAnnotations[] = sprintf(
-                '%s*****%s****',
+                "%s\n%s***** %s ****",
+                $indentation,
                 $indentation,
                 $this->getTitle()
             );
         }
 
-        foreach ($this->annotations as $annotation) {
-            $renderedAnnotations[] = $annotation->render($indentation);
+        if (!empty($this->annotations)) {
+            foreach ($this->annotations as $annotation) {
+                $renderedAnnotations[] = $annotation->render($indentation);
+            }
+        } else {
+            $renderedAnnotations[] = $indentation . ' ';
         }
 
-        return implode("\n", $renderedAnnotations);
+        return implode("\n", array_filter($renderedAnnotations));
     }
 }
