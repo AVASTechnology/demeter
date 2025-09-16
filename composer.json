@@ -1,6 +1,6 @@
 {
     "name": "avastechnology/demeter",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "OOP approach for structural code generation.",
     "keywords": ["generation", "code style", "formatting"],
     "license": "MIT",
