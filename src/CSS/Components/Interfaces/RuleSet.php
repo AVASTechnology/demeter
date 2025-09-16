@@ -2,7 +2,7 @@
 
 namespace AVASTech\Demeter\CSS\Components\Interfaces;
 
-use AVASTech\Demeter\CSS\Formats\Interfaces\RuleSet as RuleSetFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
 
 /**
  * Interface RuleSet
@@ -28,9 +28,9 @@ interface RuleSet extends Statement
     public function __construct(array $selectors, DeclarationBlock $declarationBlock);
 
     /**
-     * @param RuleSetFormat $format
+     * @param StyleSheet $styleSheet
      * @param int $nestLevel
      * @return string
      */
-    public function render(RuleSetFormat $format, int $nestLevel = 0): string;
+    public function render(StyleSheet $styleSheet, int $nestLevel = 0): string;
 }

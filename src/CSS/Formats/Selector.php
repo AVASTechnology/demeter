@@ -2,6 +2,8 @@
 
 namespace AVASTech\Demeter\CSS\Formats;
 
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
+
 /**
  * Class Selector
  *
@@ -10,10 +12,9 @@ namespace AVASTech\Demeter\CSS\Formats;
 class Selector implements Interfaces\Selector
 {
     /**
-     * @param string $selector
-     * @return string
+     * @inheritDoc
      */
-    public function format(string $selector): string
+    public function format(StyleSheet $styleSheet, string $selector): string
     {
         return $selector;
     }

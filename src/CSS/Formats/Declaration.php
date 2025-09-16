@@ -3,6 +3,7 @@
 namespace AVASTech\Demeter\CSS\Formats;
 
 use AVASTech\Demeter\CSS\Components\Interfaces\Declaration as DeclarationInterface;
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
 
 /**
  * Class Declaration
@@ -14,7 +15,7 @@ class Declaration implements Interfaces\Declaration
     /**
      * @inheritDoc
      */
-    public function format(DeclarationInterface $declaration): string
+    public function format(StyleSheet $styleSheet, DeclarationInterface $declaration): string
     {
         return sprintf(
             '%s: %s;',

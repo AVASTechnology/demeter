@@ -62,6 +62,19 @@ enum AtRuleIdentifier: string implements Interfaces\AtRuleIdentifier
     ];
 
     /**
+     * @var array<string> Statement-style identifiers
+     */
+    public const array NESTED_BLOCK_RULES = [
+        self::CONTAINER,
+        self::FONT_FEATURE_VALUES,
+        self::KEYFRAMES,
+        self::MEDIA,
+        self::SCOPE,
+        self::STARTING_STYLE,
+        self::SUPPORTS,
+    ];
+
+    /**
      * @param string $css
      * @return self
      */
@@ -100,13 +113,16 @@ enum AtRuleIdentifier: string implements Interfaces\AtRuleIdentifier
     /**
      * @return bool
      */
+    public function nestsStatements(): bool
+    {
+        return in_array($this, self::NESTED_BLOCK_RULES);
+    }
+
+    /**
+     * @return bool
+     */
     public function wrapRule(): bool
     {
         return false;
     }
-
-
-
-
-
 }

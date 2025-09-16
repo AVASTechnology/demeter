@@ -10,8 +10,9 @@ namespace AVASTech\Demeter\CSS\Formats\Interfaces;
 interface Selector
 {
     /**
+     * @param StyleSheet $styleSheet
      * @param string $selector
      * @return string
      */
-    public function format(string $selector): string;
+    public function format(StyleSheet $styleSheet, string $selector): string;
 }

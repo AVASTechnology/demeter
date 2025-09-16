@@ -5,6 +5,7 @@ namespace AVASTech\Demeter\CSS;
 use AVASTech\Demeter\CSS\Components\Interfaces\AtRule;
 use AVASTech\Demeter\CSS\Components\Interfaces\AtRuleIdentifier;
 use AVASTech\Demeter\CSS\Components\Interfaces\Comment;
+use AVASTech\Demeter\CSS\Components\Interfaces\DeclarationBlock;
 use AVASTech\Demeter\CSS\Components\Interfaces\Factory;
 use AVASTech\Demeter\CSS\Components\Interfaces\RuleSet;
 use AVASTech\Demeter\CSS\Components\StyleSheet;
@@ -224,14 +225,19 @@ class Parser
 
         $stylesheet = substr($stylesheet, strlen($rule));
 
-        $hash = $this->extractStartingHash($stylesheet);
+        if ($identifier->nestsStatements()) {
+            $hash = $this->extractStartingHash($stylesheet);
 
-        $statementBlock = $this->restoreBracketedSubstrings($hash, '{', '}');
+            $statementBlock = $this->restoreBracketedSubstrings($hash, '{', '}');
 
-        $rule = $this->restoreBlock(trim($rule));
+            $rule = $this->restoreBlock(trim($rule));
 
-        $statementBlock = substr($statementBlock, 1, -1);
-        $statements = $this->extractStatements($statementBlock);
+            $statementBlock = substr($statementBlock, 1, -1);
+
+            $statements = $this->extractStatements($statementBlock);
+        } else {
+            $statements = $this->extractDeclarationBlock($stylesheet);
+        }
 
         return $this->componentFactory->createAtRule($identifier, trim($rule), $statements);
     }
@@ -244,9 +250,6 @@ class Parser
     {
         $selectorString = substr($stylesheet, 0, strpos($stylesheet, static::TOKEN_PREFIXES['bracket:{:}']));
         $stylesheet = substr($stylesheet, strlen($selectorString));
-        $hash = $this->extractStartingHash($stylesheet);
-
-        $declarationBlockText = $this->restoreBracketedSubstrings($hash, '{', '}');
 
         $selectors = array_map(
             function ($value) {
@@ -257,6 +260,21 @@ class Parser
             },
             explode(',', $selectorString)
         );
+
+        $declarationBlock = $this->extractDeclarationBlock($stylesheet);
+
+        return $this->componentFactory->createRuleSet($selectors, $declarationBlock);
+    }
+
+    /**
+     * @param string $stylesheet
+     * @return DeclarationBlock
+     */
+    protected function extractDeclarationBlock(string &$stylesheet): DeclarationBlock
+    {
+        $hash = $this->extractStartingHash($stylesheet);
+
+        $declarationBlockText = $this->restoreBracketedSubstrings($hash, '{', '}');
 
         $declarationBlockParts = explode(';', substr($declarationBlockText, 1, -1));
 
@@ -284,7 +302,7 @@ class Parser
 
         $declarationBlock = $this->componentFactory->createDeclarationBlock($declarations);
 
-        return $this->componentFactory->createRuleSet($selectors, $declarationBlock);
+        return $this->componentFactory->createDeclarationBlock($declarations);
     }
 
     /**

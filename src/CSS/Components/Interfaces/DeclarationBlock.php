@@ -2,7 +2,7 @@
 
 namespace AVASTech\Demeter\CSS\Components\Interfaces;
 
-use AVASTech\Demeter\CSS\Formats\Interfaces\DeclarationBlock as DeclarationBlockFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
 
 /**
  * Interface DeclarationBlock
@@ -23,10 +23,10 @@ interface DeclarationBlock
     public function removeDeclaration(Property $property): void;
 
     /**
-     * @param DeclarationBlockFormat $format
+     * @param StyleSheet $styleSheet
      * @return string
      */
-    public function render(DeclarationBlockFormat $format): string;
+    public function render(StyleSheet $styleSheet): string;
 
     /**
      * @return array

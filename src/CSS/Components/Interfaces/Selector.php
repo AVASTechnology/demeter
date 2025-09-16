@@ -2,7 +2,7 @@
 
 namespace AVASTech\Demeter\CSS\Components\Interfaces;
 
-use AVASTech\Demeter\CSS\Formats\Interfaces\Selector as SelectorFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
 
 /**
  * Interface Selector
@@ -17,8 +17,8 @@ interface Selector
     public string $selector { get; set; }
 
     /**
-     * @param SelectorFormat $format
+     * @param StyleSheet $styleSheet
      * @return string
      */
-    public function render(SelectorFormat $format): string;
+    public function render(StyleSheet $styleSheet): string;
 }

@@ -27,6 +27,11 @@ interface AtRuleIdentifier
     public function isBlock(): bool;
 
     /**
+     * @return bool
+     */
+    public function nestsStatements(): bool;
+
+    /**
      * @return bool Wrap RULE in parentheses
      */
     public function wrapRule(): bool;
