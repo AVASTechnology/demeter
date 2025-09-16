@@ -76,6 +76,80 @@ class ParserTest extends UnitTestCase
         ];
     }
 
+    /**
+     * @param string $value
+     * @param array $expectedBlocks
+     * @param string $expectedString
+     * @return void
+     * @throws \ReflectionException
+     */
+    #[DataProvider('provide_removeQuotedSubstrings')]
+    public function test_removeQuotedSubstrings(string $value, array $expectedBlocks, string $expectedString)
+    {
+        $parser = $this->createPartialMock(Parser::class, []);
+
+        $parsed = $this->invokeMethod($parser, 'removeQuotedSubstrings', [$value]);
+
+        $blocks = $this->invokeGetter($parser, 'blocks');
+
+        $this->assertEquals(array_values($expectedBlocks), array_values($blocks['quoted']));
+
+        $this->assertEquals(
+            $this->buildExpectedString($expectedString, $blocks['quoted']),
+            $parsed
+        );
+    }
+
+    /**
+     * @return array[]
+     */
+    public static function provide_removeQuotedSubstrings(): array
+    {
+        return [
+            [
+                'value' => 'some general text',
+                'expectedBlocks' => [],
+                'expectedString' => 'some general text',
+            ],
+            [
+                'value' => 'a "quoted" string',
+                'expectedBlocks' => [
+                    '"quoted"',
+                ],
+                'expectedString' => 'a {$0} string',
+            ],
+            [
+                'value' => 'an "escaped \"quoted" string',
+                'expectedBlocks' => [
+                    '"escaped \"quoted"',
+                ],
+                'expectedString' => 'an {$0} string',
+            ],
+            [
+                'value' => 'an individual \" escaped "quoted" string',
+                'expectedBlocks' => [
+                    '"quoted"',
+                ],
+                'expectedString' => 'an individual \" escaped {$0} string',
+            ],
+            [
+                'value' => 'empty "" quotes',
+                'expectedBlocks' => [
+                    '""',
+                ],
+                'expectedString' => 'empty {$0} quotes',
+            ],
+            [
+                'value' => 'multiple "quoted" strings "" on "same \" page"',
+                'expectedBlocks' => [
+                    '"quoted"',
+                    '""',
+                    '"same \" page"',
+                ],
+                'expectedString' => 'multiple {$0} strings {$1} on {$2}',
+            ],
+        ];
+    }
 
     /**
      * @param string $value
