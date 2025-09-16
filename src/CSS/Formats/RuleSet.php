@@ -4,8 +4,7 @@ namespace AVASTech\Demeter\CSS\Formats;
 
 use AVASTech\Demeter\CSS\Components\Interfaces\DeclarationBlock as DeclarationBlockInterface;
 use AVASTech\Demeter\CSS\Components\Interfaces\Selector as SelectorInterface;
-use AVASTech\Demeter\CSS\Formats\Interfaces\DeclarationBlock as DeclarationBlockFormat;
-use AVASTech\Demeter\CSS\Formats\Interfaces\Selector as SelectorFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
 
 /**
  * Class RuleSet
@@ -63,63 +62,21 @@ class RuleSet implements Interfaces\RuleSet
     }
 
     /**
-     * @var DeclarationBlockFormat|null
-     */
-    public ?DeclarationBlockFormat $declarationBlockFormat {
-        get {
-            return $this->declarationBlockFormat ?? null;
-        }
-        set {
-            $this->declarationBlockFormat = $value;
-        }
-    }
-
-    /**
-     * @var SelectorFormat|null
-     */
-    public ?SelectorFormat $selectorFormat {
-        get {
-            return $this->selectorFormat ?? null;
-        }
-        set {
-            $this->selectorFormat = $value;
-        }
-    }
-
-    /**
      * @inheritDoc
      */
-    public function format(array $selectors, DeclarationBlockInterface $declarationBlock, int $nestLevel = 0): string
+    public function format(StyleSheet $styleSheet, array $selectors, DeclarationBlockInterface $declarationBlock, int $nestLevel = 0): string
     {
-        if (!isset($this->declarationBlockFormat)) {
-            throw new \UnexpectedValueException('Declaration block format not set.');
-        }
+        $selectorSpacing = $this->selectorSpacing ?? $styleSheet->selectorSpacing;
+        $selectorSpacing = $selectorSpacing instanceof \Closure
+            ? ($selectorSpacing)($selectors)
+            : strval($selectorSpacing);
 
-        if (!isset($this->selectorFormat)) {
-            throw new \UnexpectedValueException('Selector format not set.');
-        }
-
-        $this->initializeFormats();
-
-        $selectorSpacing = $this->selectorSpacing instanceof \Closure
-            ? ($this->selectorSpacing)($selectors)
-            : strval($this->selectorSpacing);
-
-        $selectors = array_map(fn(SelectorInterface $selector) => $selector->render($this->selectorFormat), $selectors);
+        $selectors = array_map(fn(SelectorInterface $selector) => $selector->render($styleSheet), $selectors);
 
         return sprintf(
             '%s %s',
             implode(sprintf(',%s', $selectorSpacing), $selectors),
-            $declarationBlock->render($this->declarationBlockFormat)
+            $declarationBlock->render($styleSheet)
         );
-    }
-
-    /**
-     * @return void
-     */
-    protected function initializeFormats(): void
-    {
-        $this->declarationBlockFormat->indent = $this->declarationBlockFormat->indent ?? $this->indent;
-        $this->declarationBlockFormat->endOfLine = $this->declarationBlockFormat->endOfLine ?? $this->endOfLine;
     }
 }

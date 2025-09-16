@@ -50,9 +50,12 @@ class Factory
 
         $styleSheet = new StyleSheet($indent, $endOfLine, $newStatement, $selectorSpacing);
 
-        $styleSheet->ruleSetFormat = $this->createRuleSet();
         $styleSheet->atRuleFormat = $this->createAtRule();
         $styleSheet->commentFormat = $this->createComment();
+        $styleSheet->declarationFormat = $this->createDeclaration();
+        $styleSheet->declarationBlockFormat = $this->createDeclarationBlock();
+        $styleSheet->ruleSetFormat = $this->createRuleSet();
+        $styleSheet->selectorFormat = $this->createSelector();
 
         return $styleSheet;
     }
@@ -83,12 +86,7 @@ class Factory
      */
     public function createRuleSet(): Interfaces\RuleSet
     {
-        $ruleSet = new RuleSet();
-
-        $ruleSet->declarationBlockFormat = $this->createDeclarationBlock();
-        $ruleSet->selectorFormat = $this->createSelector();
-
-        return $ruleSet;
+        return new RuleSet();
     }
 
     /**

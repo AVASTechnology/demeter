@@ -2,7 +2,7 @@
 
 namespace AVASTech\Demeter\CSS\Components\Interfaces;
 
-use AVASTech\Demeter\CSS\Formats\Interfaces\AtRule as AtRuleFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
 
 /**
  * Interface AtRule
@@ -12,9 +12,9 @@ use AVASTech\Demeter\CSS\Formats\Interfaces\AtRule as AtRuleFormat;
 interface AtRule extends Statement
 {
     /**
-     * @param AtRuleFormat $format
+     * @param StyleSheet $styleSheet
      * @param int $nestLevel
      * @return string
      */
-    public function render(AtRuleFormat $format, int $nestLevel = 0): string;
+    public function render(StyleSheet $styleSheet, int $nestLevel = 0): string;
 }

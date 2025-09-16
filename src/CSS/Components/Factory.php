@@ -39,10 +39,10 @@ class Factory implements Interfaces\Factory
     /**
      * @param AtRuleIdentifier $identifier
      * @param string|null $rule
-     * @param array|null $blockStatements
+     * @param array|Interfaces\DeclarationBlock|null $blockStatements
      * @return AtRule
      */
-    public function createAtRule(Interfaces\AtRuleIdentifier $identifier, ?string $rule, ?array $blockStatements = null): Interfaces\AtRule
+    public function createAtRule(Interfaces\AtRuleIdentifier $identifier, ?string $rule, array|Interfaces\DeclarationBlock|null $blockStatements = null): Interfaces\AtRule
     {
         return new AtRule($identifier, $rule, $blockStatements);
     }

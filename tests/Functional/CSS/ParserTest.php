@@ -4,11 +4,10 @@ namespace AVASTech\Demeter\Tests\Functional\CSS;
 
 use AVASTech\Demeter\CSS\Components\AtRule;
 use AVASTech\Demeter\CSS\Components\AtRuleIdentifier;
+use AVASTech\Demeter\CSS\Components\DeclarationBlock;
 use AVASTech\Demeter\CSS\Components\Factory;
-use AVASTech\Demeter\CSS\Components\Interfaces\Declaration;
 use AVASTech\Demeter\CSS\Components\Interfaces\Selector;
 use AVASTech\Demeter\CSS\Components\RuleSet;
-use AVASTech\Demeter\CSS\Components\StyleSheet;
 use AVASTech\Demeter\CSS\Parser;
 use AVASTech\Demeter\Tests\Functional\FunctionalTestCase;
 use Avastechnology\Iolaus\Traits\InvokeMethod;
@@ -50,7 +49,7 @@ class ParserTest extends FunctionalTestCase
         AtRuleIdentifier $identifier,
         string $stylesheet,
         ?string $expectedRule,
-        ?array $expectedStatements
+        array|string|null $expectedStatements
     ) {
         $mockFactory = $this->createPartialMock(Factory::class, ['createAtRule']);
         $mockAtRule = $this->createMock(AtRule::class);
@@ -58,11 +57,23 @@ class ParserTest extends FunctionalTestCase
         $mockFactory->expects($this->once())
             ->method('createAtRule')
             ->willReturnCallback(
-                function (AtRuleIdentifier $submittedIdentifier, string $submittedRule, array $submittedStatements) use ($mockAtRule, $identifier, $expectedRule, $expectedStatements) {
+                function (AtRuleIdentifier $submittedIdentifier, string $submittedRule, array|DeclarationBlock|null $submittedStatements) use ($mockAtRule, $identifier, $expectedRule, $expectedStatements) {
                     $this->assertSame($identifier, $submittedIdentifier);
                     $this->assertSame($expectedRule, $submittedRule);
 
-                    $this->assertEquals(count($expectedStatements), count($submittedStatements));;
+                    if (is_array($expectedStatements)) {
+                        $this->assertEquals(
+                            count($expectedStatements),
+                            is_array($submittedStatements) ? count($submittedStatements) : $submittedStatements,
+                        );
+                    } elseif (is_string($expectedStatements)) {
+                        $this->assertInstanceOf(
+                            $expectedStatements,
+                            $submittedStatements,
+                        );
+                    } else {
+                        $this->assertNull($submittedStatements);
+                    }
 
                     return $mockAtRule;
                 }
@@ -97,7 +108,6 @@ class ParserTest extends FunctionalTestCase
                     '.progress-bar',
                 ],
             ],
-
             [
                 'identifier' => AtRuleIdentifier::KEYFRAMES,
                 'stylesheet' => '@keyframes spinner-border {
@@ -110,6 +120,17 @@ class ParserTest extends FunctionalTestCase
                 'expectedStatements' => [
                     'to',
                 ],
+            ],
+            [
+                'identifier' => AtRuleIdentifier::FONT_FACE,
+                'stylesheet' => '@font-face {
+                    font-display: block;
+                    font-family: "MyFont";
+                    src: url("./example/myFont") format("woff2"),
+                }
+                div { display:none; }',
+                'expectedRule' => '',
+                'expectedStatements' => DeclarationBlock::class,
             ],
         ];
     }

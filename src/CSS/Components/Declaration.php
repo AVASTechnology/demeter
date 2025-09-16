@@ -3,7 +3,7 @@
 namespace AVASTech\Demeter\CSS\Components;
 
 use AVASTech\Demeter\CSS\Components\Interfaces\Property;
-use AVASTech\Demeter\CSS\Formats\Interfaces\Declaration as DeclarationFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
 
 /**
  * Class Declaration
@@ -22,11 +22,11 @@ class Declaration implements Interfaces\Declaration
     }
 
     /**
-     * @param DeclarationFormat $format
+     * @param StyleSheet $styleSheet
      * @return string
      */
-    public function render(DeclarationFormat $format): string
+    public function render(StyleSheet $styleSheet): string
     {
-        return $format->format($this);
+        return $styleSheet->declarationFormat->format($styleSheet, $this);
     }
 }
