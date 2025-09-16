@@ -3,8 +3,6 @@
 namespace AVASTech\Demeter\CSS\Formats\Interfaces;
 
 use AVASTech\Demeter\CSS\Components\Declaration;
-use AVASTech\Demeter\CSS\Formats\Interfaces\Declaration as DeclarationFormat;
-use AVASTech\Demeter\CSS\Formats\Interfaces\DeclarationBlock as DeclarationBlockFormat;
 
 /**
  * Interface DeclarationBlockFormatInterface
@@ -14,23 +12,10 @@ use AVASTech\Demeter\CSS\Formats\Interfaces\DeclarationBlock as DeclarationBlock
 interface DeclarationBlock
 {
     /**
-     * @var string|\Closure|null
-     */
-    public string|\Closure|null $indent { get; set; }
-
-    /**
-     * @var string|\Closure|null
-     */
-    public string|\Closure|null $endOfLine { get; set; }
-
-    /**
-     * @var DeclarationFormat|null
-     */
-    public ?DeclarationFormat $declarationFormat { get; set; }
-
-    /**
+     * @param StyleSheet $styleSheet
      * @param Declaration[] $declarations
+     * @param int $nestLevel
      * @return string
      */
-    public function format(array $declarations, int $nestLevel = 0): string;
+    public function format(StyleSheet $styleSheet, array $declarations, int $nestLevel = 0): string;
 }

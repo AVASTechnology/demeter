@@ -2,7 +2,7 @@
 
 namespace AVASTech\Demeter\CSS\Components\Interfaces;
 
-use AVASTech\Demeter\CSS\Formats\Interfaces\Comment as CommentFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
 
 /**
  * Interface Comment
@@ -12,9 +12,9 @@ use AVASTech\Demeter\CSS\Formats\Interfaces\Comment as CommentFormat;
 interface Comment extends Statement
 {
     /**
-     * @param CommentFormat $format
+     * @param StyleSheet $styleSheet
      * @param int $nestLevel
      * @return string
      */
-    public function render(CommentFormat $format, int $nestLevel = 0): string;
+    public function render(StyleSheet $styleSheet, int $nestLevel = 0): string;
 }

@@ -2,8 +2,6 @@
 
 namespace AVASTech\Demeter\CSS\Components;
 
-use AVASTech\Demeter\CSS\Components\Interfaces\Property;
-
 /**
  * Class CustomProperty
  *
@@ -17,12 +15,10 @@ class CustomProperty implements Interfaces\Property
     public string $name = 'CUSTOM_PROPERTY';
 
     /**
-     * @param string $name
+     * @param string $value
      */
     public function __construct(public string $value)
     {
         //
     }
-
-
 }

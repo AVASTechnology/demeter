@@ -2,7 +2,7 @@
 
 namespace AVASTech\Demeter\CSS\Components;
 
-use AVASTech\Demeter\CSS\Formats\Interfaces\DeclarationBlock as DeclarationBlockFormat;;
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
 
 /**
  * Class DeclarationBlock
@@ -45,10 +45,10 @@ class DeclarationBlock implements Interfaces\DeclarationBlock
     }
 
     /**
-     * @param DeclarationBlockFormat $format
+     * @param StyleSheet $styleSheet
      * @return string
      */
-    public function render(DeclarationBlockFormat $format): string
+    public function render(StyleSheet $styleSheet): string
     {
         $this->sort();
 
@@ -57,7 +57,7 @@ class DeclarationBlock implements Interfaces\DeclarationBlock
             $this->declarations
         );
 
-        return $format->format($declarations);
+        return $styleSheet->declarationBlockFormat->format($styleSheet, $declarations);
     }
 
     /**

@@ -8,7 +8,10 @@ use AVASTech\Demeter\CSS\Components\Interfaces\RuleSet as RuleSetComponent;
 use AVASTech\Demeter\CSS\Components\Interfaces\Statement;
 use AVASTech\Demeter\CSS\Formats\Interfaces\AtRule as AtRuleFormat;
 use AVASTech\Demeter\CSS\Formats\Interfaces\Comment as CommentFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\Declaration as DeclarationFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\DeclarationBlock as DeclarationBlockFormat;
 use AVASTech\Demeter\CSS\Formats\Interfaces\RuleSet as RuleSetFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\Selector as SelectorFormat;
 
 /**
  * Class StyleSheet
@@ -30,6 +33,42 @@ class StyleSheet implements Interfaces\StyleSheet
     }
 
     /**
+     * @var CommentFormat|null
+     */
+    public ?CommentFormat $commentFormat {
+        get {
+            return ($this->commentFormat = $this->commentFormat ?? null);
+        }
+        set {
+            $this->commentFormat = $value;
+        }
+    }
+
+    /**
+     * @var DeclarationFormat|null
+     */
+    public ?DeclarationFormat $declarationFormat {
+        get {
+            return ($this->declarationFormat = $this->declarationFormat ?? null);
+        }
+        set {
+            $this->declarationFormat = $value;
+        }
+    }
+
+    /**
+     * @var DeclarationBlockFormat|null
+     */
+    public ?DeclarationBlockFormat $declarationBlockFormat {
+        get {
+            return ($this->declarationBlockFormat = $this->declarationBlockFormat ?? null);
+        }
+        set {
+            $this->declarationBlockFormat = $value;
+        }
+    }
+
+    /**
      * @var RuleSetFormat|null
      */
     public ?RuleSetFormat $ruleSetFormat {
@@ -42,14 +81,14 @@ class StyleSheet implements Interfaces\StyleSheet
     }
 
     /**
-     * @var CommentFormat|null
+     * @var SelectorFormat|null
      */
-    public ?CommentFormat $commentFormat {
+    public ?SelectorFormat $selectorFormat {
         get {
-            return ($this->commentFormat = $this->commentFormat ?? null);
+            return ($this->selectorFormat = $this->selectorFormat ?? null);
         }
         set {
-            $this->commentFormat = $value;
+            $this->selectorFormat = $value;
         }
     }
 
@@ -74,8 +113,6 @@ class StyleSheet implements Interfaces\StyleSheet
      */
     public function format(array $statements): string
     {
-        $this->initializeFormats();
-
         $onNewStatement = $this->onNewStatement instanceof \Closure
             ? $this->onNewStatement
             : fn() => strval($this->onNewStatement);
@@ -85,36 +122,13 @@ class StyleSheet implements Interfaces\StyleSheet
             array_map(
                 function (Statement $statement) use ($onNewStatement){
                     return match (true) {
-                        $statement instanceof AtRuleComponent  => $statement->render($this->atRuleFormat),
-                        $statement instanceof RuleSetComponent => $statement->render($this->ruleSetFormat),
-                        $statement instanceof CommentComponent => $statement->render($this->commentFormat),
+                        $statement instanceof AtRuleComponent  => $statement->render($this),
+                        $statement instanceof RuleSetComponent => $statement->render($this),
+                        $statement instanceof CommentComponent => $statement->render($this),
                     } . $onNewStatement($statement);
                 },
                 $statements,
             )
         );
-    }
-
-    /**
-     * @return void
-     */
-    protected function initializeFormats(): void
-    {
-        $this->atRuleFormat->indent = $this->atRuleFormat->indent ?? $this->indent;
-        $this->atRuleFormat->endOfLine = $this->atRuleFormat->endOfLine ?? $this->endOfLine;
-        $this->atRuleFormat->onNewStatement = $this->atRuleFormat->onNewStatement ?? $this->onNewStatement;
-        $this->atRuleFormat->selectorSpacing = $this->atRuleFormat->onNewStatement ?? $this->selectorSpacing;
-
-        $this->atRuleFormat->ruleSetFormat = $this->atRuleFormat->ruleSetFormat ?? $this->ruleSetFormat;
-        $this->atRuleFormat->commentFormat = $this->atRuleFormat->commentFormat ?? $this->commentFormat;
-
-        $this->ruleSetFormat->indent = $this->ruleSetFormat->indent ?? $this->indent;
-        $this->ruleSetFormat->endOfLine = $this->ruleSetFormat->endOfLine ?? $this->endOfLine;
-        $this->ruleSetFormat->onNewStatement = $this->ruleSetFormat->onNewStatement ?? $this->onNewStatement;
-        $this->ruleSetFormat->selectorSpacing = $this->ruleSetFormat->onNewStatement ?? $this->selectorSpacing;
-
-        $this->commentFormat->indent = $this->commentFormat->indent ?? $this->indent;
-        $this->commentFormat->endOfLine = $this->commentFormat->endOfLine ?? $this->endOfLine;
-        $this->commentFormat->onNewStatement = $this->commentFormat->onNewStatement ?? $this->onNewStatement;
     }
 }

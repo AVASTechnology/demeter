@@ -2,6 +2,8 @@
 
 namespace AVASTech\Demeter\CSS\Formats;
 
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
+
 /**
  * Class Comment
  *
@@ -48,17 +50,21 @@ class Comment implements Interfaces\Comment
     /**
      * @inheritDoc
      */
-    public function format(string $content, int $nestLevel = 0): string
+    public function format(StyleSheet $styleSheet, string $content, int $nestLevel = 0): string
     {
+        $indent = $this->indent ?? $styleSheet->indent;
+        $endOfLine = $this->endOfLine ?? $styleSheet->endOfLine;
+        $onNewStatement = $this->onNewStatement ?? $styleSheet->onNewStatement;
+
         return sprintf(
             '%s/*%s%s%s%s%s*/%s',
-            $this->indent,
-            $this->endOfLine,
-            $this->indent,
+            $indent,
+            $endOfLine,
+            $indent,
             $content,
-            $this->endOfLine,
-            $this->indent,
-            $this->onNewStatement,
+            $endOfLine,
+            $indent,
+            $onNewStatement,
         );
     }
 }

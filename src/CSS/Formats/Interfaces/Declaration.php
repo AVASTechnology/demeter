@@ -12,8 +12,9 @@ use AVASTech\Demeter\CSS\Components\Interfaces\Declaration as DeclarationInterfa
 interface Declaration
 {
     /**
+     * @param StyleSheet $styleSheet
      * @param DeclarationInterface $declaration
      * @return string
      */
-    public function format(DeclarationInterface $declaration): string;
+    public function format(StyleSheet $styleSheet, DeclarationInterface $declaration): string;
 }

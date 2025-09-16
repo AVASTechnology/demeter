@@ -4,7 +4,7 @@ namespace AVASTech\Demeter\CSS\Components;
 
 use AVASTech\Demeter\CSS\Components\Interfaces\DeclarationBlock as DeclarationBlock;
 use AVASTech\Demeter\CSS\Components\Interfaces\Selector as Selector;
-use AVASTech\Demeter\CSS\Formats\Interfaces\RuleSet as RuleSetFormat;
+use AVASTech\Demeter\CSS\Formats\Interfaces\StyleSheet;
 
 /**
  * Class RuleSet
@@ -39,12 +39,12 @@ class RuleSet implements Interfaces\RuleSet
     }
 
     /**
-     * @param RuleSetFormat $format
+     * @param StyleSheet $styleSheet
      * @param int $nestLevel
      * @return string
      */
-    public function render(RuleSetFormat $format, int $nestLevel = 0): string
+    public function render(StyleSheet $styleSheet, int $nestLevel = 0): string
     {
-        return $format->format($this->selectors, $this->declarationBlock, $nestLevel);
+        return $styleSheet->ruleSetFormat->format($styleSheet, $this->selectors, $this->declarationBlock, $nestLevel);
     }
 }
