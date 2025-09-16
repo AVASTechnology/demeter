@@ -300,8 +300,6 @@ class Parser
             $declarations[] = $this->componentFactory->createDeclaration($property, $declarationValue);
         }
 
-        $declarationBlock = $this->componentFactory->createDeclarationBlock($declarations);
-
         return $this->componentFactory->createDeclarationBlock($declarations);
     }
 
@@ -367,7 +365,7 @@ class Parser
     {
         return $this->removeEmbeddedTokens(
             $value,
-            '/((?<![\\\\])[\'"])((?:.(?!(?<![\\\\])\1))*.?)\1/',
+            '/((?<![\\\\])[\'"])((?:(?!(?<![\\\\])\1).)*.?)\1/s',
             'quoted'
         );
     }
