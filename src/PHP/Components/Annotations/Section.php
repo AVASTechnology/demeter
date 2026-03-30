@@ -4,6 +4,7 @@ namespace AVASTech\Demeter\PHP\Components\Annotations;
 
 use AVASTech\Demeter\PHP\Components\Interfaces\AnnotationInterface;
 use AVASTech\Demeter\PHP\Definitions\Import;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 
 /**
  * Class Section
@@ -139,9 +140,10 @@ class Section implements AnnotationInterface
     /**
      * @inheritDoc
      */
-    public function render(string $indentation = ''): string
+    public function render(?ContextInterface $context = null): string
     {
         $renderedAnnotations = [];
+        $indentation = $context?->indentation() ?? '';
 
         if (!empty($this->getTitle())) {
             $renderedAnnotations[] = sprintf(
@@ -154,7 +156,7 @@ class Section implements AnnotationInterface
 
         if (!empty($this->annotations)) {
             foreach ($this->annotations as $annotation) {
-                $renderedAnnotations[] = $annotation->render($indentation);
+                $renderedAnnotations[] = $annotation->render($context);
             }
         } else {
             $renderedAnnotations[] = $indentation . ' ';

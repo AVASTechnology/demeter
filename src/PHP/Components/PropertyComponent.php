@@ -10,6 +10,7 @@ use AVASTech\Demeter\PHP\Components\Traits\HasAnnotation;
 use AVASTech\Demeter\PHP\Components\Traits\HasName;
 use AVASTech\Demeter\PHP\Components\Traits\HasTypes;
 use AVASTech\Demeter\PHP\Components\Traits\HasVisibility;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 use AVASTech\Demeter\PHP\Definitions\Type;
 use AVASTech\Demeter\PHP\Definitions\TypeSet;
 
@@ -84,10 +85,10 @@ class PropertyComponent extends AbstractComponent implements AnnotatedComponentI
     }
 
     /**
-     * @param  string  $indentation
+     * @param ContextInterface|null $context
      * @return string
      */
-    public function renderAnnotation(string $indentation = ''): string
+    public function renderAnnotation(?ContextInterface $context = null): string
     {
         $parts = [
             '/**',
@@ -100,6 +101,8 @@ class PropertyComponent extends AbstractComponent implements AnnotatedComponentI
             ),
             ' */'
         ];
+        
+        $indentation = $context?->indentation() ?? '';
 
         return $indentation . implode("\n" . $indentation, array_filter($parts));
     }
@@ -107,8 +110,10 @@ class PropertyComponent extends AbstractComponent implements AnnotatedComponentI
     /**
      * @inheritDoc
      */
-    public function render(string $indentation = ''): string
+    public function render(?ContextInterface $context = null): string
     {
+    	$indentation = $context?->indentation() ?? '';
+    	
         $parts = [
             $this->getVisibility(),
             $this->isStatic() ? 'static' : '',

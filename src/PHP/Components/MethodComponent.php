@@ -14,6 +14,7 @@ use AVASTech\Demeter\PHP\Components\Traits\HasInheritanceScoping;
 use AVASTech\Demeter\PHP\Components\Traits\HasName;
 use AVASTech\Demeter\PHP\Components\Traits\HasVisibility;
 use AVASTech\Demeter\PHP\Definitions\Import;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 use AVASTech\Demeter\PHP\Definitions\Type;
 use AVASTech\Demeter\PHP\Definitions\TypeSet;
 
@@ -251,10 +252,10 @@ class MethodComponent extends AbstractComponent implements AnnotatedComponentInt
     }
 
     /**
-     * @param  string  $indentation
+     * @param ContextInterface|null $context
      * @return string
      */
-    public function renderAnnotation(string $indentation = ''): string
+    public function renderAnnotation(?ContextInterface $context = null): string
     {
         $parts = [
             '/**',
@@ -277,13 +278,15 @@ class MethodComponent extends AbstractComponent implements AnnotatedComponentInt
 
         $parts[] = ' */';
 
+        $indentation = $context?->indentation() ?? '';
+
         return $indentation . implode("\n" . $indentation, array_filter($parts));
     }
 
     /**
      * @inheritDoc
      */
-    public function render(string $indentation = ''): string
+    public function render(?ContextInterface $context = null): string
     {
         $parts = [
             $this->getVisibility(),
@@ -301,13 +304,15 @@ class MethodComponent extends AbstractComponent implements AnnotatedComponentInt
         $contents = [];
 
         foreach ($this->contents as $contentComponent) {
-            $contents[] = $contentComponent->render($indentation);
+            $contents[] = $contentComponent->render($context);
         }
 
         $returnTypeDeclaration = '';
         if (!empty($this->getReturns())) {
             $returnTypeDeclaration = ': ' . implode('|', $this->getReturns());
         }
+
+        $indentation = $context?->indentation() ?? '';
 
         return sprintf(
             "%s%s(%s)%s\n%s{\n%s%s\n%s}\n",

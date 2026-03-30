@@ -4,6 +4,7 @@ namespace AVASTech\Demeter\PHP\Components\Annotations;
 
 use AVASTech\Demeter\PHP\Components\Interfaces\AnnotationInterface;
 use AVASTech\Demeter\PHP\Definitions\Import;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 
 /**
  * Class GenericType
@@ -60,15 +61,15 @@ class GenericDoc implements AnnotationInterface
     }
 
     /**
-     * @param  string  $indentation
+     * @param ContextInterface|null $context
      * @return string
      */
-    public function render(string $indentation = ''): string
+    public function render(?ContextInterface $context = null): string
     {
         return implode(
             ' ',
             [
-                $indentation,
+                $context?->indentation() ?? '',
                 '@' . $this->getDocType(),
                 $this->getName(),
             ]

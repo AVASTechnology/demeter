@@ -3,6 +3,7 @@
 namespace AVASTech\Demeter\PHP\Components\Annotations;
 
 use AVASTech\Demeter\PHP\Components\Interfaces\AnnotationInterface;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 
 /**
  * Class RawAnnotation
@@ -54,7 +55,7 @@ class Raw implements AnnotationInterface
     /**
      * @inheritDoc
      */
-    public function render(string $indentation = ''): string
+    public function render(?ContextInterface $context = null): string
     {
         return $this->getContent();
     }
