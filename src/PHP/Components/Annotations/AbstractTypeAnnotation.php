@@ -6,6 +6,7 @@ use AVASTech\Demeter\PHP\Components\Interfaces\AnnotationInterface;
 use AVASTech\Demeter\PHP\Components\Traits\HasName;
 use AVASTech\Demeter\PHP\Components\Traits\HasTypes;
 use AVASTech\Demeter\PHP\Definitions\Import;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 use AVASTech\Demeter\PHP\Definitions\TypeSet;
 
 /**
@@ -98,15 +99,15 @@ abstract class AbstractTypeAnnotation implements AnnotationInterface
     }
 
     /**
-     * @param string $indentation
+     * @param ContextInterface|null $context
      * @return string
      */
-    public function render(string $indentation = ''): string
+    public function render(?ContextInterface $context = null): string
     {
         return implode(
             ' ',
             [
-                $indentation,
+                $context->indentation(),
                 '@' . $this->getDocType(),
                 $this->getTypeString(true),
                 $this->getName(),

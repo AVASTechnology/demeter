@@ -2,6 +2,8 @@
 
 namespace AVASTech\Demeter\PHP\Components;
 
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
+
 /**
  * Class FileComponent
  *
@@ -13,7 +15,7 @@ class FileComponent extends AbstractComponent
     /**
      * @inheritDoc
      */
-    public function render(string $indentation = ''): string
+    public function render(?ContextInterface $context = null): string
     {
         // TODO: Implement render() method.
     }

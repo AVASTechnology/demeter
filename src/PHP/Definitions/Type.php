@@ -21,4 +21,6 @@ enum Type: string
     case BUILT_IN_SELF     = 'self';
     case BUILT_IN_PARENT   = 'parent';
     case BUILT_IN_MIXED    = 'mixed';
+
+    case BUILT_IN_VOID     = 'void';
 }
