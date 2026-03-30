@@ -3,6 +3,7 @@
 namespace AVASTech\Demeter\PHP\Components\Interfaces;
 
 use AVASTech\Demeter\PHP\Components\Annotations\Section;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 
 /**
  * Interface AnnotatedComponentInterface
@@ -12,10 +13,10 @@ use AVASTech\Demeter\PHP\Components\Annotations\Section;
 interface AnnotatedComponentInterface
 {
     /**
-     * @param  string  $indentation
+     * @param ContextInterface|null $context
      * @return string
      */
-    public function renderAnnotation(string $indentation = ''): string;
+    public function renderAnnotation(?ContextInterface $context = null): string;
 
     /**
      * @return Section

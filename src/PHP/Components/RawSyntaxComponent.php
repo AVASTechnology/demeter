@@ -2,6 +2,8 @@
 
 namespace AVASTech\Demeter\PHP\Components;
 
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
+
 /**
  * Class RawSyntaxComponent
  *
@@ -44,8 +46,8 @@ class RawSyntaxComponent extends AbstractComponent
     /**
      * @inheritDoc
      */
-    public function render(string $indentation = ''): string
+    public function render(?ContextInterface $context = null): string
     {
-        return $indentation . $this->syntax;
+        return ($context?->indentation() ?? '') . $this->syntax;
     }
 }

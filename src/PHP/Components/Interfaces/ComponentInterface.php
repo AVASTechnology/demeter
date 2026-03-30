@@ -3,6 +3,7 @@
 namespace AVASTech\Demeter\PHP\Components\Interfaces;
 
 use AVASTech\Demeter\PHP\Definitions\Import;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 
 /**
  * Interface AnnotatedComponentInterface
@@ -12,10 +13,10 @@ use AVASTech\Demeter\PHP\Definitions\Import;
 interface ComponentInterface
 {
     /**
-     * @param  string  $indentation
+     * @param ContextInterface|null $context
      * @return string
      */
-    public function render(string $indentation = ''): string;
+    public function render(?ContextInterface $context = null): string;
 
     /**
      * @return Import[]

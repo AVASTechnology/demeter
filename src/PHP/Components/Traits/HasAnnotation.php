@@ -4,6 +4,7 @@ namespace AVASTech\Demeter\PHP\Components\Traits;
 
 use AVASTech\Demeter\PHP\Components\Annotations\Section;
 use AVASTech\Demeter\PHP\Components\Interfaces\AnnotationInterface;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 
 /**
  * Trait HasAnnotation
@@ -56,11 +57,11 @@ trait HasAnnotation
     }
 
     /**
-     * @param  string  $indentation
+     * @param ContextInterface|null $context
      * @return string
      */
-    public function renderAnnotation(string $indentation = ''): string
+    public function renderAnnotation(?ContextInterface $context = null): string
     {
-        return $this->getAnnotationSection()->render($indentation);
+        return $this->getAnnotationSection()->render($context);
     }
 }

@@ -8,6 +8,7 @@ use AVASTech\Demeter\PHP\Components\Traits\HasInterfaces;
 use AVASTech\Demeter\PHP\Components\Traits\HasParent;
 use AVASTech\Demeter\PHP\Definitions\ClassReference;
 use AVASTech\Demeter\PHP\Definitions\Import;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 
 /**
  * Class ClassComponent
@@ -372,10 +373,10 @@ class ClassComponent extends AbstractComponent
     }
 
     /**
-     * @param  string  $indentation
+     * @param ContextInterface|null $context
      * @return string
      */
-    public function render(string $indentation = ''): string
+    public function render(?ContextInterface $context = null): string
     {
         $parts = [];
 

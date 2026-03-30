@@ -4,6 +4,7 @@ namespace AVASTech\Demeter\PHP\Components;
 
 use AVASTech\Demeter\PHP\Components\Interfaces\ComponentInterface;
 use AVASTech\Demeter\PHP\Definitions\Import;
+use AVASTech\Demeter\PHP\Definitions\Interfaces\ContextInterface;
 
 /**
  * Class AbstractComponent
@@ -13,10 +14,10 @@ use AVASTech\Demeter\PHP\Definitions\Import;
 abstract class AbstractComponent implements ComponentInterface
 {
     /**
-     * @param  string  $indentation
+     * @param ContextInterface|null $context
      * @return string
      */
-    abstract public function render(string $indentation = ''): string;
+    abstract public function render(?ContextInterface $context = null): string;
 
     /**
      * @return Import[]
